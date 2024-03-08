@@ -32,7 +32,7 @@ source .venv/bin/activate
 Then, install the required Python `cryptography` package using pip:
 
 ```bash
-pip install cryptography zipfile
+pip install cryptography 
 ```
 
 ## Usage
