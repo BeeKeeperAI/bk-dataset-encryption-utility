@@ -12,8 +12,13 @@ This utility, `bkai-encrypt.py` provides a secure method for encrypting and decr
 
 - Python 3.6 or newer.
 - Cryptography library.
+- An existing Content Encryption Key (CEK)
 
-## Create Python Virtual Environment
+## Installation
+
+Before you can use this script, ensure you have Python installed on your system and make sure that you are executing the commands that follow in the folder that contains this script. And make sure that you have already created your Content Encryption Key (CEK).
+
+### Environment Setup
 
 To keep your python dependencies local to this script, you may want to use python's virtual environment module. You can do this by running the following commands:
 
@@ -22,23 +27,11 @@ python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-## Installation
-
-Before you can use this script, ensure you have Python installed on your system. Then, install the required Python `cryptography` package using pip:
+Then, install the required Python `cryptography` package using pip:
 
 ```bash
 pip install cryptography
 ```
-
-## Before Using Utility, Generate a Content Encryption Key
-
-Before encrypting files, you need to create a Content Encryption Key (CEK). You can generate a secure key using OpenSSL with the following command that will save your CEK to secret.key in the directory where you run this:
-
-```bash
-openssl rand -out secret.key 32
-```
-
-This command creates a 32-byte random key and saves it to secret.key. Keep this key safe and secure, as you will need it for both encryption and decryption of your files. You may also choose to use the EscrowAI encryption tool to wrap this key to create your Wrapped Content Encryption Key (WCEK)
 
 ## Usage
 
