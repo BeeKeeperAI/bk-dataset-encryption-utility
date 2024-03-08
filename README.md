@@ -13,6 +13,15 @@ This utility, `bkai-encrypt.py` provides a secure method for encrypting and decr
 - Python 3.6 or newer.
 - Cryptography library.
 
+## Create Python Virtual Environment
+
+To keep your python dependencies local to this script, you may want to use python's virtual environment module. You can do this by running the following commands:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
 ## Installation
 
 Before you can use this script, ensure you have Python installed on your system. Then, install the required Python `cryptography` package using pip:
