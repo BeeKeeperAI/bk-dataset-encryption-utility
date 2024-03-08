@@ -22,8 +22,8 @@ def zip_content(input_path, zip_file_name):
         if input_path.is_dir():
             for root, dirs, files in os.walk(input_path):
                 for file in files:
-                    file_path = os.path.join(root, file)
-                    arcname = os.path.relpath(file_path, start=os.path.dirname(input_path))
+                    file_path = Path(root) / file
+                    arcname = file_path.relative_to(input_path)
                     zipf.write(file_path, arcname)
         else:
             zipf.write(input_path, input_path.name)
