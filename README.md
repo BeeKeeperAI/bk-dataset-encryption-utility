@@ -23,7 +23,7 @@ pip install cryptography
 
 ## Before Using Utility, Generate a Content Encryption Key
 
-Before encrypting files, you need to create a secret.key file outside of this script. You can generate a secure key using OpenSSL with the following command:
+Before encrypting files, you need to create a Content Encryption Key (CEK). You can generate a secure key using OpenSSL with the following command that will save your CEK to secret.key in the directory where you run this:
 
 ```bash
 openssl rand -out secret.key 32
@@ -33,12 +33,28 @@ This command creates a 32-byte random key and saves it to secret.key. Keep this 
 
 ## Usage
 
+### Encrypting a Folder
+
+To encrypt a folder, run the script with the encrypt action, specifying the paths for the input folder, the key file (your secret.key), and the desired output folder for the encrypted content:
+
+```bash
+python3 bkai-encrypt.py encrypt --input /path/to/your/unencrypted/folder --key /path/to/your/secret.key --output /path/to/your/encrypted/folder
+```
+
 ### Encrypting a File
 
 To encrypt a file, run the script with the encrypt action, specifying the paths for the input file, the key file (your secret.key), and the desired output file for the encrypted content:
 
 ```bash
-python bkai-encrypt.py encrypt --input /path/to/your/file.txt --key /path/to/your/secret.key --output /path/to/encrypted/file.enc
+python3 bkai-encrypt.py encrypt --input /path/to/your/file.txt --key /path/to/your/secret.key --output /path/to/encrypted/file.bkenc
+```
+
+### Decrypting a Folder
+
+To decrypt a folder previously encrypted by this tool, use the decrypt action with the paths to the encrypted folder, the key file, and the desired output folder for the decrypted content:
+
+```bash
+python bkai-encrypt.py decrypt --input /path/to/your/encrypted/folder --key /path/to/your/secret.key --output /path/to/your/unencrypted/folder
 ```
 
 ### Decrypting a File
@@ -46,10 +62,8 @@ python bkai-encrypt.py encrypt --input /path/to/your/file.txt --key /path/to/you
 To decrypt a file previously encrypted by this tool, use the decrypt action with the paths to the encrypted file, the key file, and the desired output file for the decrypted content:
 
 ```bash
-python bkai-encrypt.py decrypt --input /path/to/encrypted/file.enc --key /path/to/your/secret.key --output /path/to/decrypted/file.txt
+python bkai-encrypt.py decrypt --input /path/to/encrypted/file.bkenc --key /path/to/your/secret.key --output /path/to/decrypted/file.txt
 ```
-
-## Uploading to Azure Blob Storage
 
 After encrypting your files, you can securely upload them to Azure Blob Storage for safekeeping. This script does not cover the upload process, but you can use Azure's CLI tools or SDKs in your preferred programming language to upload the encrypted files.
 
