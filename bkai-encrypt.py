@@ -1,10 +1,42 @@
 import os
 import argparse
 from pathlib import Path
+import shutil
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from cryptography.hazmat.backends import default_backend
+import zipfile
+
+# Set to True to enable debug mode or use debug argument
+DEBUG_MODE = False
+
+def debug_print(*args, **kwargs):
+    if DEBUG_MODE:
+        print(*args, **kwargs)
+
+def zip_content(input_path, zip_file_name):
+    """Zip the encrypted content, either a single file or a folder, and then remove the original content."""
+    zip_file_path = f"{zip_file_name}"
+    with zipfile.ZipFile(zip_file_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        if input_path.is_dir():
+            for root, dirs, files in os.walk(input_path):
+                for file in files:
+                    file_path = os.path.join(root, file)
+                    arcname = os.path.relpath(file_path, start=os.path.dirname(input_path))
+                    zipf.write(file_path, arcname)
+        else:
+            zipf.write(input_path, input_path.name)
+
+    # Remove the original content after zipping
+    if input_path.is_dir():
+        debug_print(f"Removing folder: {input_path}")
+        shutil.rmtree(input_path)
+    else:
+        debug_print(f"Removing file: {input_path}")
+        os.remove(input_path)
+    
+    print(f"Content zipped as: {zip_file_path}")
 
 def encrypt_file(input_file_path, key_path, output_file_path):
     """Encrypt a file using AES-256-GCM with PBKDF2 key derivation."""
@@ -35,8 +67,9 @@ def encrypt_file(input_file_path, key_path, output_file_path):
 
     # Save the encrypted file with "Salted__" prefix, salt, and ciphertext
     with open(output_file_path, 'wb') as encrypted_file:
+        debug_print(f"Encrypting file: {input_file_path} to {output_file_path} with key from {key_path}")
         encrypted_file.write(b'Salted__' + salt + ciphertext)
-
+    
 def decrypt_file(input_file_path, key_path, output_file_path):
     """Decrypt a file using AES-256-GCM with PBKDF2 key derivation."""
     with open(input_file_path, 'rb') as encrypted_file:
@@ -71,6 +104,7 @@ def decrypt_file(input_file_path, key_path, output_file_path):
 
     # Save the decrypted content
     with open(output_file_path, 'wb') as decrypted_file:
+        debug_print(f"Decrypting file: {input_file_path} to {output_file_path} with key from {key_path}")
         decrypted_file.write(plaintext)
 
 def encrypt_folder(input_folder_path, key_path, output_folder_path):
@@ -101,13 +135,18 @@ def decrypt_folder(input_folder_path, key_path, output_folder_path):
             decrypt_file(str(file_path), key_path, str(dest_file_path))
 
 def main():
-    parser = argparse.ArgumentParser(description="Encrypt or decrypt a file or folder using AES-256-GCM with PBKDF2 key derivation.")
+    global DEBUG_MODE  # Declare DEBUG_MODE as global to modify the global instance
+    parser = argparse.ArgumentParser(description="Encrypt or decrypt a file or folder using AES-256-GCM with PBKDF2 key derivation, with an option to zip the encrypted content.")
     parser.add_argument("action", choices=["encrypt", "decrypt"], help="Action to perform")
     parser.add_argument("--input", required=True, help="Input file or folder path")
     parser.add_argument("--key", required=True, help="Content Encryption Key file path")
     parser.add_argument("--output", required=True, help="Output file or folder path")
+    parser.add_argument("--zip", nargs='?', help="Optional. Provide a zip file name to zip the output. Requires a file name.")
+    parser.add_argument("--debug", action='store_true', help="Enable debug mode for verbose output.")
 
     args = parser.parse_args()
+
+    DEBUG_MODE = args.debug
 
     input_path = Path(args.input)
     output_path = Path(args.output)
@@ -117,14 +156,19 @@ def main():
             output_path.mkdir(parents=True, exist_ok=True)
             encrypt_folder(input_path, args.key, output_path)
         else:
-            output_path.parent.mkdir(parents=True, exist_ok=True)  # Ensure output directory exists
+            output_path.parent.mkdir(parents=True, exist_ok=True)
             encrypt_file(input_path, args.key, output_path)
+        
+        if args.zip:
+            zip_file_name = args.zip  # The zip file name is directly obtained from --zip
+            zip_content(output_path, zip_file_name)
+
     elif args.action == "decrypt":
         if input_path.is_dir():
             output_path.mkdir(parents=True, exist_ok=True)
             decrypt_folder(input_path, args.key, output_path)
         else:
-            output_path.parent.mkdir(parents=True, exist_ok=True)  # Ensure output directory exists
+            output_path.parent.mkdir(parents=True, exist_ok=True)
             decrypt_file(input_path, args.key, output_path)
 
 if __name__ == "__main__":

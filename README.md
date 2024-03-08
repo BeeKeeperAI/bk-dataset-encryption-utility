@@ -7,6 +7,8 @@ This utility, `bkai-encrypt.py` provides a secure method for encrypting and decr
 - Encrypt files using AES-256-GCM.
 - Decrypt files encrypted by this tool.
 - Utilize PBKDF2 key derivation for enhanced security.
+- Optional zipping of the encrypted or decrypted output.
+- Debug mode for verbose output during encryption or decryption processes.
 
 ## Requirements
 
@@ -16,11 +18,11 @@ This utility, `bkai-encrypt.py` provides a secure method for encrypting and decr
 
 ## Installation
 
-Before you can use this script, ensure you have Python installed, you already have an existing Content Encryption Key(CEK), and you are executing the commands in this README in the folder that contains this script.
+Ensure you have Python installed, you already have an existing Content Encryption Key (CEK), and you are executing the commands in the folder that contains this script.
 
 ### Environment Setup
 
-To keep your python dependencies local to this script, you should use python's virtual environment module. You can do this by running the following commands:
+It's recommended to use Python's virtual environment to keep dependencies local:
 
 ```bash
 python3 -m venv .venv
@@ -30,42 +32,38 @@ source .venv/bin/activate
 Then, install the required Python `cryptography` package using pip:
 
 ```bash
-pip install cryptography
+pip install cryptography zipfile
 ```
 
 ## Usage
 
-### Encrypting a Folder
+### Encrypting a Folder or File
 
-To encrypt a folder, run the script with the encrypt action, specifying the paths for the input folder, your CEK, and the desired output folder for the encrypted content:
+To encrypt, specify the `encrypt` action, the paths for the input folder or file, your CEK, and the desired output folder or file for the encrypted content. Add `--zip <zip_file_name>` to optionally zip the output.
 
-```bash
-python3 bkai-encrypt.py encrypt --input /path/to/your/unencrypted/folder --key /path/to/your/secret.key --output /path/to/your/encrypted/folder
-```
-
-### Encrypting a File
-
-To encrypt a file, run the script with the encrypt action, specifying the paths for the input file, your CEK, and the desired output file for the encrypted content:
 
 ```bash
-python3 bkai-encrypt.py encrypt --input /path/to/your/file.txt --key /path/to/your/secret.key --output /path/to/encrypted/file.bkenc
+python3 bkai-encrypt.py encrypt --input /path/to/your/input --key /path/to/your/cek.key --output /path/to/your/output --zip optional_zip_name
 ```
 
-### Decrypting a Folder
+### Decrypting a Folder or File
 
-To decrypt a folder previously encrypted by this tool, use the decrypt action with the paths to the encrypted folder, your CEK, and the desired output folder for the decrypted content:
+To decrypt, use the `decrypt` action with the paths to the encrypted folder or file, your CEK, and the desired output location for the decrypted content. Add `--zip <zip_file_name>` to optionally zip the output.
+
 
 ```bash
-python bkai-encrypt.py decrypt --input /path/to/your/encrypted/folder --key /path/to/your/secret.key --output /path/to/your/unencrypted/folder
+python bkai-encrypt.py decrypt --input /path/to/your/encrypted/input --key /path/to/your/cek.key --output /path/to/your/output --zip optional_zip_name
 ```
 
-### Decrypting a File
+### Debug Mode
 
-To decrypt a file previously encrypted by this tool, use the decrypt action with the paths to the encrypted file, your CEK, and the desired output file for the decrypted content:
+For verbose output during the encryption or decryption process, add the `--debug` flag:
 
 ```bash
-python bkai-encrypt.py decrypt --input /path/to/encrypted/file.bkenc --key /path/to/your/secret.key --output /path/to/decrypted/file.txt
+python bkai-encrypt.py encrypt --input /path/to/your/input --key /path/to/your/cek.key --output /path/to/your/output --debug
 ```
+
+### After Encryption
 
 After encrypting your files, you can securely upload them to Azure Blob Storage for safekeeping. This script does not cover the upload process, but you can use Azure's CLI tools or SDKs in your preferred programming language to upload the encrypted files.
 
@@ -73,3 +71,7 @@ After encrypting your files, you can securely upload them to Azure Blob Storage 
 
 - Always keep your Content Encrpytion Key (CEK) secure and do not share it.
 - Always validate you have effectively uploaded encrypted files
+
+## Disclaimer
+
+This utility is provided as-is with no guarantees or warranties regarding its use or performance. Use it at your own risk. Please make sure you understand how to handle encryption keys securely before using this tool.
