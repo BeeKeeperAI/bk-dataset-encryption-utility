@@ -1,3 +1,9 @@
+# Copyright (c) 2024 BeeKeeperAI, Inc.
+#
+# Use of this source code is governed by an MIT
+# license that can be found in the LICENSE.txt file 
+# or at https://opensource.org/license/mit.
+
 import os
 import argparse
 from pathlib import Path
