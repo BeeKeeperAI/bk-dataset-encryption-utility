@@ -75,3 +75,9 @@ After encrypting your files, you can securely upload them to Azure Blob Storage 
 ## Disclaimer
 
 This utility is provided as-is with no guarantees or warranties regarding its use or performance. Use it at your own risk. Please make sure you understand how to handle encryption keys securely before using this tool.
+
+## License
+
+Copyright (c) 2024 BeeKeeperAI, Inc.
+
+Use of this source code is governed by an MIT license that can be found in the LICENSE.txt file or at <https://opensource.org/license/mit>.
