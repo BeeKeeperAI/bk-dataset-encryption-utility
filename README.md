@@ -1,6 +1,6 @@
 # BeeKeeperAI Encryption Utility
 
-This utility, `bkai_encrypt.py` provides a secure method for encrypting and decrypting data steward files for use with the EscrowAI platform. It is designed to be run at the command line using both an input, output, and a pre-created Content Encrpytion Key (CEK).
+This utility, `bkai_encrypt.py` provides a secure method for encrypting and decrypting data set files for use with the EscrowAI platform. It is designed to be run at the command line using both an input, output, and a pre-created Content Encrpytion Key (CEK).
 
 ## Features
 
