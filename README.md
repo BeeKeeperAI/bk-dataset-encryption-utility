@@ -1,6 +1,6 @@
 # BeeKeeperAI Encryption Utility
 
-This utility, `bkai_encrypt.py` provides a secure method for encrypting and decrypting files for use with the EscrowAI platform. It is designed to be run at the command line using both an input, output, and a pre-created Content Encrpytion Key (CEK).
+This utility, `bkai_encrypt.py` provides a secure method for encrypting and decrypting data steward files for use with the EscrowAI platform. It is designed to be run at the command line using both an input, output, and a pre-created Content Encrpytion Key (CEK).
 
 ## Features
 
@@ -52,7 +52,7 @@ To decrypt, use the `decrypt` action with the paths to the encrypted folder or f
 
 
 ```bash
-python bkai_encrypt.py decrypt --input /path/to/your/encrypted/input --key /path/to/your/cek.key --output /path/to/your/output --zip optional_zip_name
+python3 bkai_encrypt.py decrypt --input /path/to/your/encrypted/input --key /path/to/your/cek.key --output /path/to/your/output --zip optional_zip_name
 ```
 
 ### Debug Mode
@@ -60,15 +60,7 @@ python bkai_encrypt.py decrypt --input /path/to/your/encrypted/input --key /path
 For verbose output during the encryption or decryption process, add the `--debug` flag:
 
 ```bash
-python bkai_encrypt.py encrypt --input /path/to/your/input --key /path/to/your/cek.key --output /path/to/your/output --debug
-```
-
-### Running Tests
-
-This utility is tested using Python's Unit Testing Framework with tests in [tests/test_encrypt.py](tests/test_encrypt.py). In order to execute the tests, you should install the cryptography dependency and run the following command:
-
-```bash
-python3 -m unittest tests/test_encrypt.py
+python3 bkai_encrypt.py encrypt --input /path/to/your/input --key /path/to/your/cek.key --output /path/to/your/output --debug
 ```
 
 ### After Encryption
