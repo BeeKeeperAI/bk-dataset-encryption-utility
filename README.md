@@ -63,6 +63,14 @@ For verbose output during the encryption or decryption process, add the `--debug
 python bkai-encrypt.py encrypt --input /path/to/your/input --key /path/to/your/cek.key --output /path/to/your/output --debug
 ```
 
+### Running Tests
+
+This utility is tested using Python's Unit Testing Framework with tests in [tests/test_encrypt.py](tests/test_encrypt.py). In order to execute the tests, you should install the cryptography dependency and run the following command:
+
+```bash
+python3 -m unittest tests/test_encrypt.py
+```
+
 ### After Encryption
 
 After encrypting your files, you can securely upload them to Azure Blob Storage for safekeeping. This script does not cover the upload process, but you can use Azure's CLI tools or SDKs in your preferred programming language to upload the encrypted files.
