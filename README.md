@@ -1,6 +1,6 @@
 # BeeKeeperAI Encryption Utility
 
-This utility, `bkai-encrypt.py` provides a secure method for encrypting and decrypting files for use with the EscrowAI platform. It is designed to be run at the command line using both an input, output, and a pre-created Content Encrpytion Key (CEK).
+This utility, `bkai_encrypt.py` provides a secure method for encrypting and decrypting data set files for use with the EscrowAI platform. It is designed to be run at the command line using both an input, output, and a pre-created Content Encrpytion Key (CEK).
 
 ## Features
 
@@ -43,7 +43,7 @@ To encrypt, specify the `encrypt` action, the paths for the input folder or file
 
 
 ```bash
-python3 bkai-encrypt.py encrypt --input /path/to/your/input --key /path/to/your/cek.key --output /path/to/your/output --zip optional_zip_name
+python3 bkai_encrypt.py encrypt --input /path/to/your/input --key /path/to/your/cek.key --output /path/to/your/output --zip optional_zip_name
 ```
 
 ### Decrypting a Folder or File
@@ -52,7 +52,7 @@ To decrypt, use the `decrypt` action with the paths to the encrypted folder or f
 
 
 ```bash
-python bkai-encrypt.py decrypt --input /path/to/your/encrypted/input --key /path/to/your/cek.key --output /path/to/your/output --zip optional_zip_name
+python3 bkai_encrypt.py decrypt --input /path/to/your/encrypted/input --key /path/to/your/cek.key --output /path/to/your/output --zip optional_zip_name
 ```
 
 ### Debug Mode
@@ -60,7 +60,7 @@ python bkai-encrypt.py decrypt --input /path/to/your/encrypted/input --key /path
 For verbose output during the encryption or decryption process, add the `--debug` flag:
 
 ```bash
-python bkai-encrypt.py encrypt --input /path/to/your/input --key /path/to/your/cek.key --output /path/to/your/output --debug
+python3 bkai_encrypt.py encrypt --input /path/to/your/input --key /path/to/your/cek.key --output /path/to/your/output --debug
 ```
 
 ### After Encryption

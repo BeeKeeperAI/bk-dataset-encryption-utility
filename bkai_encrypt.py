@@ -47,8 +47,7 @@ def zip_content(input_path, zip_file_name):
 def encrypt_file(input_file_path, key_path, output_file_path):
     """Encrypt a file using AES-256-GCM with PBKDF2 key derivation."""
     with open(key_path, 'rb') as key_file:
-        password = key_file.read().rstrip()
-    password = password if isinstance(password, (bytes, bytearray)) else password.encode()
+        password = key_file.read()
 
     # Generate a random salt
     salt = os.urandom(8)
@@ -89,8 +88,7 @@ def decrypt_file(input_file_path, key_path, output_file_path):
     ciphertext = encrypted_data[16:]  # The rest is the ciphertext
     
     with open(key_path, 'rb') as key_file:
-        password = key_file.read().rstrip()
-    password = password if isinstance(password, (bytes, bytearray)) else password.encode()
+        password = key_file.read()
 
     # Derive key from password and salt using PBKDF2
     kdf = PBKDF2HMAC(
@@ -133,10 +131,9 @@ def decrypt_folder(input_folder_path, key_path, output_folder_path):
     for file_path in input_folder_path.rglob('*'):
         if file_path.is_file() and file_path.suffix == '.bkenc':
             rel_path = file_path.relative_to(input_folder_path)
-            # Remove the custom '.bkenc' extension
-            orig_extension = rel_path.suffixes[-2] if len(rel_path.suffixes) > 1 else ''
-            new_rel_path = rel_path.with_suffix(orig_extension)
-            dest_file_path = output_folder_path / new_rel_path
+            # Correctly handle the removal of '.bkenc' and restoration of the original file name
+            original_file_name = str(rel_path).replace('.bkenc', '')  # Directly remove '.bkenc'
+            dest_file_path = output_folder_path / original_file_name
             dest_file_path.parent.mkdir(parents=True, exist_ok=True)
             decrypt_file(str(file_path), key_path, str(dest_file_path))
 
